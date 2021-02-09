@@ -2,7 +2,7 @@
 #
 # ct_covidnet ds ChRIS plugin app
 #
-# (c) 2016-2019 Fetal-Neonatal Neuroimaging & Developmental Science Center
+# (c) 2019-2021 Fetal-Neonatal Neuroimaging & Developmental Science Center
 #                   Boston Children's Hospital
 #
 #              http://childrenshospital.org/FNNDSC/
@@ -12,100 +12,27 @@
 
 import os
 import sys
-from run_covidnet_ct import RunAnalysis
+from .run_covidnet_ct import RunAnalysis
 
-sys.path.append(os.path.dirname(__file__))
-
-# import the Chris app superclass
 from chrisapp.base import ChrisApp
 
 
 Gstr_title = """
-
-Generate a title from 
-http://patorjk.com/software/taag/#p=display&f=Doom&t=ct_covidnet
-
-"""
-
-Gstr_synopsis = """
-
-(Edit this in-line help for app specifics. At a minimum, the 
-flags below are supported -- in the case of DS apps, both
-positional arguments <inputDir> and <outputDir>; for FS apps
-only <outputDir> -- and similarly for <in> <out> directories
-where necessary.)
-
-    NAME
-
-       ct_covidnet.py 
-
-    SYNOPSIS
-
-        python ct_covidnet.py                                         \\
-            [-h] [--help]                                               \\
-            [--json]                                                    \\
-            [--man]                                                     \\
-            [--meta]                                                    \\
-            [--savejson <DIR>]                                          \\
-            [-v <level>] [--verbosity <level>]                          \\
-            [--version]                                                 \\
-            <inputDir>                                                  \\
-            <outputDir> 
-
-    BRIEF EXAMPLE
-
-        * Bare bones execution
-
-            mkdir in out && chmod 777 out
-            python ct_covidnet.py   \\
-                                in    out
-
-    DESCRIPTION
-
-        `ct_covidnet.py` ...
-
-    ARGS
-
-        [-h] [--help]
-        If specified, show help message and exit.
-        
-        [--json]
-        If specified, show json representation of app and exit.
-        
-        [--man]
-        If specified, print (this) man page and exit.
-
-        [--meta]
-        If specified, print plugin meta data and exit.
-        
-        [--savejson <DIR>] 
-        If specified, save json representation file to DIR and exit. 
-        
-        [-v <level>] [--verbosity <level>]
-        Verbosity level for app. Not used currently.
-        
-        [--version]
-        If specified, print version number and exit. 
-
+ _____ _____      _____ _____  _   _ ___________        _   _      _   
+/  __ \_   _|    /  __ \  _  || | | |_   _|  _  \      | \ | |    | |  
+| /  \/ | |______| /  \/ | | || | | | | | | | | |______|  \| | ___| |_ 
+| |     | |______| |   | | | || | | | | | | | | |______| . ` |/ _ \ __|
+| \__/\ | |      | \__/\ \_/ /\ \_/ /_| |_| |/ /       | |\  |  __/ |_ 
+ \____/ \_/       \____/\___/  \___/ \___/|___/        \_| \_/\___|\__|
 """
 
 
 class Ct_covidnet(ChrisApp):
-    """
-    An app to ....
-    """
-    AUTHORS                 = 'DarwinAI (jeffer.peng@darwinai.ca)'
-    SELFPATH                = os.path.dirname(os.path.abspath(__file__))
-    SELFEXEC                = os.path.basename(__file__)
-    EXECSHELL               = 'python3'
-    TITLE                   = 'Plugin to run covidnet using CT images'
+    PACKAGE                 = __package__
+    TITLE                   = 'Plugin to run covidnet on CT images'
     CATEGORY                = ''
     TYPE                    = 'ds'
-    DESCRIPTION             = 'An app to ...'
-    DOCUMENTATION           = 'http://wiki'
-    VERSION                 = '0.1'
     ICON                    = '' # url of an icon image
-    LICENSE                 = 'AGPL 3.0'
     MAX_NUMBER_OF_WORKERS   = 1  # Override with integer value
     MIN_NUMBER_OF_WORKERS   = 1  # Override with integer value
     MAX_CPU_LIMIT           = '' # Override with millicore value as string, e.g. '2000m'
@@ -140,12 +67,9 @@ class Ct_covidnet(ChrisApp):
             help         = 'Name of CT image file to infer from')
 
     def run(self, options):
-        """
-        Define the code to be run by this plugin app.
-        """
         print(Gstr_title)
-        print('Version: %s' % self.get_version())
-        options.model_dir = os.path.join(os.getcwd(), 'models/COVIDNet-CT-A')
+        print(f'Version: {self.get_version()}')
+        options.model_dir = '/usr/local/lib/covidnet/COVID-Net-CT-1-L'
         options.meta_name = 'model.meta'
         options.ckpt_name = 'model'
         options.input_width = 512
@@ -157,11 +81,4 @@ class Ct_covidnet(ChrisApp):
         """
         Print the app's man page.
         """
-        print(Gstr_synopsis)
-
-
-# ENTRYPOINT
-if __name__ == "__main__":
-    chris_app = Ct_covidnet()
-    chris_app.launch()
-
+        self.print_help()

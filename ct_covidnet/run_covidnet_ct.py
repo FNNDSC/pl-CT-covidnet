@@ -13,7 +13,7 @@ from math import ceil
 import tensorflow as tf
 import matplotlib.pyplot as plt
 
-from data_utils import auto_body_crop
+from .data_utils import auto_body_crop
 
 # Dict keys
 TRAIN_OP_KEY = 'train_op'
